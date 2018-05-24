@@ -64,6 +64,7 @@
         <main class="py-3">
             <div class="container">
                 @yield('breadcrumbs')
+                 @include('layouts.partials.flash')
                 @yield('content')
             </div>
         </main>
