@@ -16,3 +16,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/cabinet', 'Cabinet\HomeController@index')->name('cabinet');
+
+Route::view('/home','shop-home');
+Route::view('/item','shop-item');
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+	// Matches The "/admin/users" URL
+    Route::view('/index','admin.index');
+});
