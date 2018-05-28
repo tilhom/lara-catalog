@@ -19,6 +19,8 @@ class CreateAnimalsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('description');
+            $table->text('excerpt');
+            $table->integer('price');
             $table->string('image');
             $table->timestamps();
         });

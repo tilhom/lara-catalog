@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Animal extends Model
 {
 	use Sluggable;
-    public $fillable = ['cat_id','name','description','image'];
+    public $fillable = ['cat_id','name','description','price','image'];
 
     public function sluggable()
     {
@@ -17,6 +17,11 @@ class Animal extends Model
                 'source' => 'name'
             ]
         ];
+    }
+
+    public function getFormattedPriceAttribute()
+    {
+         return number_format($this->price/100,2,',',' ');
     }
 
     public function category()
