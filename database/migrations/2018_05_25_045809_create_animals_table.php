@@ -17,6 +17,7 @@ class CreateAnimalsTable extends Migration
             $table->increments('id');
             $table->integer('cat_id');
             $table->string('name');
+            $table->string('slug');
             $table->text('description');
             $table->string('image');
             $table->timestamps();
