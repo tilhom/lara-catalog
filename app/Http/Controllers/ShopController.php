@@ -10,7 +10,7 @@ class ShopController extends Controller
 {
     public function index()
     {
-    	$animals = Animal::inRandomOrder()->take(6)->get();
+    	$animals = Animal::with('category')->inRandomOrder()->take(6)->get();
     	return view('shop.index',compact('animals'));
     }
 
@@ -21,7 +21,7 @@ class ShopController extends Controller
     }
     public function showcat($cslug)
     {
-    	$animals = Category::whereSlug($cslug)->firstOrFail()->animals()->simplePaginate(6);
+    	$animals = Category::whereSlug($cslug)->firstOrFail()->animals()->with('category')->simplePaginate(6);
     	return view('shop.index',compact('animals'));
     }
 }
