@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Animal extends Model
 {
 	use Sluggable;
-    public $fillable = ['cat_id','name','description','price','image'];
+    //public $fillable = ['name','description','price','image'];
 
     public function sluggable()
     {

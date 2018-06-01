@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'ShopController@index')->name('home');
+Route::get('/{cslug}/{aslug}', 'ShopController@show')->name('show');
+Route::get('/{cslug}', 'ShopController@showcat')->name('showcat');
 
 Auth::routes();
 

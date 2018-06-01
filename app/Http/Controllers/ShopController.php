@@ -11,6 +11,17 @@ class ShopController extends Controller
     public function index()
     {
     	$animals = Animal::inRandomOrder()->take(6)->get();
-    	return view('shop.index',compact('cat','animals'));
+    	return view('shop.index',compact('animals'));
+    }
+
+    public function show($cslug,$aslug)
+    {
+    	$animal = Animal::whereSlug($aslug)->firstOrFail();
+    	return view('shop.show',compact('animal'));
+    }
+    public function showcat($cslug)
+    {
+    	$animals = Category::whereSlug($cslug)->firstOrFail()->animals()->simplePaginate(6);
+    	return view('shop.index',compact('animals'));
     }
 }

@@ -2,7 +2,10 @@
           @if(count($categories))
           <div class="list-group">
 		  	@foreach($categories as $category)
-          	<a href="#" class="list-group-item">{{$category->name}}</a>
+  			<a href="/{{$category->slug}}" 
+  			class="list-group-item {{(request('cslug')==$category->slug)?'active':''}}" >
+          		{{$category->name}}
+          	</a>
 			@endforeach
           </div>
           @endif
