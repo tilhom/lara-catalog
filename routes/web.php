@@ -35,7 +35,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	// Matches The "/admin/users" URL
     Route::get('/',function(){
     	return view('admin.index');
-    });
+    })->name('admin.index');
     //Route::view('/','admin.index');
 });
 Route::get('/{cslug}/{aslug}', 'ShopController@show')->name('show');
