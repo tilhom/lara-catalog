@@ -18,10 +18,11 @@ class CreateAnimalsTable extends Migration
             $table->integer('category_id');
             $table->string('name');
             $table->string('slug');
-            $table->text('description');
-            $table->text('excerpt');
-            $table->integer('price');
-            $table->string('image');
+            $table->text('description')->nullable();
+            $table->text('excerpt')->nullable();
+            $table->integer('price')->nullable();
+            $table->string('image')->nullable();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }
