@@ -17,12 +17,13 @@
 	</div>
 </div>
 
-<table class="table">
+<table class="table table-responsive">
 	<tr class="thead-light">
 		<th>No</th>
 		<th>Name</th>
 		<th>Description</th>
-		<th width="280px">Action</th>
+		<th width="180px">Action</th>
+		<th>Status</th>
 	</tr>
 	@foreach ($categories as $category)
 	<tr>
@@ -41,6 +42,14 @@
 					<i class="fa fa-trash-o" aria-hidden="true"></i>
 				</button>
 			</form>
+		</td>
+		<td>
+			<div class="form-check checkbox-slider--a checkbox-slider-md  checkbox-slider-info ">
+				<label>
+					<input type="checkbox" {{$category->status?'checked':''}}>
+					<span></span>
+				</label>
+			</div>
 		</td>
 	</tr>
 	@endforeach

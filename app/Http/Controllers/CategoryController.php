@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -37,14 +38,40 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->all());
         request()->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'image' => 'required|image|max:1999'
         ]);
-
-        Category::create($request->all());
+        $uploadedImage = $this->uploadfile($request->file('image'));
+        Category::create([
+            'name' => request('name'),
+            'description' => request('description'),
+            'status' => (request('status')==='1')?1:0,
+            'image' => $uploadedImage
+        ]);
 
         return redirect()->route('categories.index')
                         ->with('success','Category created successfully.');
+    }
+
+    protected function uploadfile($image)
+    {
+        // Get filename with extension
+      $filenameWithExt = $image->getClientOriginalName();
+
+      // Get just the filename
+      $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+      // Get extension
+      $extension = $image->getClientOriginalExtension();
+
+      // Create new filename
+      $filenameToStore = $filename.'_'.time().'.'.$extension;
+
+      // Uplaod image
+      $path= $image->storeAs('public/categories/', $filenameToStore);
+      return $filenameToStore;
     }
 
     /**
@@ -82,7 +109,12 @@ class CategoryController extends Controller
             'name' => 'required'
         ]);
 
-        $category->update($request->all());
+        $category->update([
+            'name' => request('name'),
+            'description' => request('description'),
+            'status' => (request('status')==='1')?1:0
+        ]
+        );
 
         return redirect()->route('categories.index')
                         ->with('success','Category updated successfully');
@@ -96,9 +128,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-         $category->delete();
-        
-        return redirect()->route('categories.index')
+         if(Storage::delete('public/categories/'.$category->image)){
+            $category->delete();
+            return redirect()->route('categories.index')
                         ->with('success','Category deleted successfully');
+         }
+        dd('Destroy delete');
     }
 }

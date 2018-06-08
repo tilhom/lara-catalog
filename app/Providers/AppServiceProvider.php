@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         view()->composer('layouts.partials.sidebar',function($view){
-            $view->with('categories', Category::all());
+            $view->with('categories', Category::statusOn());
         });
     }
 

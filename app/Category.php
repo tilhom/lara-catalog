@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    public const ACTIVE = 1;
+    public const DISABLE = 0;
+
 	use Sluggable;
 
-	public $fillable = ['name','description','image'];
+	public $fillable = ['name','description','image','status'];
 
 	public function sluggable()
     {
@@ -18,6 +21,11 @@ class Category extends Model
                 'source' => 'name'
             ]
         ];
+    }
+
+    public static function statusOn()
+    {
+        return self::where('status',self::ACTIVE)->get();
     }
 
     public function animals()

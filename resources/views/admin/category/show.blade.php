@@ -6,18 +6,39 @@
 	<li class="breadcrumb-item active">View category</li>
 </ol>
 
-<div class="row">
-	<div class="col-lg-12 mt-3">
-		<div class="pull-left">
-			<h2>{{$category->name}}</h2>
-		</div>
-		<div class="pull-right">
-			<a class="btn btn-primary" href="{{ route('categories.index') }}"> Back</a>
-		</div>
+<div class="card mb-5">
+	<div class="card-body">
+		<h3 class="card-title pull-left">{{$category["name"]}}</h3>
+		<a class="btn btn-primary pull-right" href="{{ route('categories.index') }}"> Back</a>
+		<div class="clearfix"></div>
+		<table class="table table-bordered table-hover table-sm">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Attribute</th>
+					<th>Value</th>
+				</tr>
+			</thead>	
+			<tbody>
+				@foreach($category->toArray() as $key => $value)
+				<tr>
+					<th width="40">{{$loop->iteration}}</th>
+					<td width="150">{{ucfirst($key)}}</td>
+					<td>{{$value}}</td>
+				</tr>
+				@endforeach
+			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="3" class="text-center">
+<a class="btn btn-success" href="{{route('categories.edit',$category->id)}}">Update</a>
+					</th>
+				</tr>
+			</tfoot>
+		</table>
 	</div>
+	@if($category['image'])
+	<img src="/storage/categories/{{$category['image']}}" class="card-img-bottom">
+	@endif
 </div>
-<hr>
-<p>{{$category->description}}</p>
-<hr>
-<img src="/img/{{$category->image}}">
 @endsection

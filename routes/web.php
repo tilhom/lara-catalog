@@ -2,7 +2,7 @@
 
 Route::get('/', 'ShopController@index')->name('home');
 
- Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
  //POST запрос для отправки email письма пользователю для сброса пароля
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
 //ссылка для сброса пароля (можно размещать в письме)
@@ -15,11 +15,11 @@ Route::post('admin/password/reset', 'Auth\ResetPasswordController@reset');
  Route::post('admin/login', 'Auth\LoginController@login');
  Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
 
- Auth::routes();
- Route::get('/cabinet', 'Cabinet\HomeController@index')->name('cabinet');
+ //Auth::routes();
+// Route::get('/cabinet', 'Cabinet\HomeController@index')->name('cabinet');
 
-Route::view('/home','shop-home');
-Route::view('/item','shop-item');
+//Route::view('/home','shop-home');
+//Route::view('/item','shop-item');
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 	// Matches The "/admin/users" URL
     Route::get('/',function(){

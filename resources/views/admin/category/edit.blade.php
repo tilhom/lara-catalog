@@ -34,6 +34,16 @@
           <textarea class="form-control" rows="4" name="detail" placeholder="Detail">{{ $category->description }}</textarea>
       </div>
   </div>
+  <div class="col-xs-12 col-sm-12 col-md-12">
+      <strong>Status:</strong>
+      <div class="form-check checkbox-slider--a checkbox-slider-md  checkbox-slider-info ">
+        <label>
+          <input class="form-check-input" name="status" type="checkbox" value='1' 
+          {{$category->status?'checked':''}}>
+          <span></span>
+        </label>
+      </div> 
+    </div>
   <div class="col-xs-12 col-sm-12 col-md-12 text-center">
     <button type="submit" class="btn btn-primary">Submit</button>
   </div>

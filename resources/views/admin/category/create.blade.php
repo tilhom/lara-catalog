@@ -18,8 +18,8 @@
 
 @include('admin.partials.errors')
 
-<form action="{{ route('categories.store') }}" method="POST">
-	@csrf
+<form action="{{ route('categories.store') }}" method="POST" enctype='multipart/form-data'>
+	 {{ csrf_field() }}
 	
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12">
@@ -33,6 +33,21 @@
 				<strong>Description:</strong>
 				<textarea class="form-control" style="height:150px" name="description" placeholder="Detail"></textarea>
 			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="form-group">
+				<label for="file1">Image file input</label>
+				<input type="file" class="form-control-file" id="file1" name='image'>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<strong>Status:</strong>
+			<div class="form-check checkbox-slider--a checkbox-slider-md  checkbox-slider-info ">
+				<label>
+					<input class="form-check-input" name="status" type="checkbox" checked="">
+					<span></span>
+				</label>
+			</div> 
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 text-center">
 			<button type="submit" class="btn btn-primary">Submit</button>
