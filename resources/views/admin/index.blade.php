@@ -14,6 +14,20 @@
         <input type="checkbox" checked><span></span>
       </label>
     </div>
+    <form>
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Category</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="category">
+          <option value="">Please choose category..</option>
+          @foreach($categories as $category)
+          <option value="{{$category->id}}">
+            {{$category->name}}
+          </option>
+          @endforeach
+        </select>
+      </div>
+      <button type="submit"> Ok </button>
+    </form>
   </div>
 </div>
 @endsection

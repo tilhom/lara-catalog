@@ -17,7 +17,7 @@
 </div>
 @include('admin.partials.errors')
 
-<form action="{{ route('categories.update',$category->id) }}" method="POST">
+<form action="{{ route('categories.update',$category->id) }}" method="POST" enctype='multipart/form-data'>
  @csrf
  @method('PUT')
 
@@ -31,8 +31,14 @@
   <div class="col-xs-12 col-sm-12 col-md-12">
       <div class="form-group">
           <strong>Description:</strong>
-          <textarea class="form-control" rows="4" name="detail" placeholder="Detail">{{ $category->description }}</textarea>
+          <textarea class="form-control" rows="4" name="description" placeholder="Detail for..">{{ $category->description }}</textarea>
       </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-12">
+    <img class="mb-3" id="blah" src="{{'/storage/categories/'.$category->image}}" alt="your image" width="180" >
+    <div class="form-group">
+      <input type="file" class="form-control-file" name="image" onchange="readURL(this);" />
+    </div>
   </div>
   <div class="col-xs-12 col-sm-12 col-md-12">
       <strong>Status:</strong>
@@ -51,4 +57,17 @@
 
 </form>
 
+@endsection
+@section('jscode')
+<script>
+ function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+</script>          
 @endsection

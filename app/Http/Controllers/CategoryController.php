@@ -41,9 +41,14 @@ class CategoryController extends Controller
         //dd($request->all());
         request()->validate([
             'name' => 'required',
-            'image' => 'required|image|max:1999'
+            'image' => 'image|max:1999'
         ]);
-        $uploadedImage = $this->uploadfile($request->file('image'));
+        
+        $uploadedImage = $this->uploadfile(
+            $request->file('image'),
+            $request->hasFile('image')
+        );
+
         Category::create([
             'name' => request('name'),
             'description' => request('description'),
@@ -52,27 +57,30 @@ class CategoryController extends Controller
         ]);
 
         return redirect()->route('categories.index')
-                        ->with('success','Category created successfully.');
+        ->with('success','Category created successfully.');
     }
 
-    protected function uploadfile($image)
+    protected function uploadfile($image, $hasfile)
     {
+        $filenameToStore='';
+        if ($hasfile) {
         // Get filename with extension
-      $filenameWithExt = $image->getClientOriginalName();
+          $filenameWithExt = $image->getClientOriginalName();
 
-      // Get just the filename
-      $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+              // Get just the filename
+          $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
-      // Get extension
-      $extension = $image->getClientOriginalExtension();
+              // Get extension
+          $extension = $image->getClientOriginalExtension();
 
-      // Create new filename
-      $filenameToStore = $filename.'_'.time().'.'.$extension;
+              // Create new filename
+          $filenameToStore = $filename.'_'.time().'.'.$extension;
 
-      // Uplaod image
-      $path= $image->storeAs('public/categories/', $filenameToStore);
+              // Uplaod image
+          $path= $image->storeAs('public/categories/', $filenameToStore);
+      }
       return $filenameToStore;
-    }
+  }
 
     /**
      * Display the specified resource.
@@ -108,16 +116,28 @@ class CategoryController extends Controller
         request()->validate([
             'name' => 'required'
         ]);
-
+        if ($request->hasFile('image')) {
+            // Delete the old picture
+            Storage::delete('public/categories/'.$category->image);
+            // Upload the new picture
+            $uploadedImage = 
+            $this->uploadfile($request->file('image'),$request->hasFile('image'));
+            $category->update([
+            'name' => request('name'),
+            'description' => request('description'),
+            'status' => (request('status')==='1')?1:0,
+            // Update the model with the new picture
+            'image' => $uploadedImage,
+        ]);
+        }
         $category->update([
             'name' => request('name'),
             'description' => request('description'),
-            'status' => (request('status')==='1')?1:0
-        ]
-        );
+            'status' => (request('status')==='1')?1:0,
+        ]);
 
         return redirect()->route('categories.index')
-                        ->with('success','Category updated successfully');
+        ->with('success','Category updated successfully');
     }
 
     /**
@@ -128,11 +148,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-         if(Storage::delete('public/categories/'.$category->image)){
-            $category->delete();
-            return redirect()->route('categories.index')
-                        ->with('success','Category deleted successfully');
-         }
-        dd('Destroy delete');
+        if($category->image){
+            Storage::delete('public/categories/'.$category->image);
+        }
+        $category->delete();
+        return redirect()->route('categories.index')
+        ->with('success','Category deleted successfully');
     }
 }

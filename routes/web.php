@@ -1,5 +1,7 @@
 <?php
 
+use App\Category;
+
 Route::get('/', 'ShopController@index')->name('home');
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
@@ -23,7 +25,8 @@ Route::post('admin/password/reset', 'Auth\ResetPasswordController@reset');
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 	// Matches The "/admin/users" URL
     Route::get('/',function(){
-    	return view('admin.index');
+    	$categories = Category::all();
+    	return view('admin.index',compact('categories'));
     })->name('admin.index');
     Route::resources([
     	'categories'=>'CategoryController',

@@ -44,7 +44,7 @@
 			<strong>Status:</strong>
 			<div class="form-check checkbox-slider--a checkbox-slider-md  checkbox-slider-info ">
 				<label>
-					<input class="form-check-input" name="status" type="checkbox" checked="">
+					<input class="form-check-input" name="status" type="checkbox" checked="" value="1">
 					<span></span>
 				</label>
 			</div> 
