@@ -32,4 +32,26 @@ class Category extends Model
     {
         return $this->hasMany('App\Animal');
     }
+    /**
+     *  string uploadImage(UploadedImage $image)
+     * @param UploadedImage|null $image
+     * @return string
+     */
+    public static function uploadImage($image)
+    {
+        $filenameToStore='';
+        if (!empty($image)) {
+        // Get filename with extension
+          $filenameWithExt = $image->getClientOriginalName();
+              // Get just the filename
+          $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+              // Get extension
+          $extension = $image->getClientOriginalExtension();
+              // Create new filename
+          $filenameToStore = $filename.'_'.time().'.'.$extension;
+              // Uplaod image
+          $path= $image->storeAs('public/categories/', $filenameToStore);
+      }
+      return $filenameToStore;
+    }
 }

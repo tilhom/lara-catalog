@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Animal;
+use App\Category;
 use Illuminate\Http\Request;
 
 class AnimalController extends Controller
@@ -28,7 +29,8 @@ class AnimalController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.animal.create',compact('categories'));
     }
 
     /**
@@ -39,7 +41,23 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         //dd($request->all());
+        request()->validate([
+            'name' => 'required',
+            'category_id' => 'required',
+            'image' => 'image|max:1999'
+        ]);
+
+        Animal::create([
+            'name' => request('name'),
+            'description' => request('description'),
+            'status' => (request('status')==='1')?1:0,
+            'category_id' => request('category_id'),
+            'image' => Animal::uploadImage($request->file('image'))
+        ]);
+
+        return redirect()->route('animals.index')
+        ->with('success','Category created successfully.');
     }
 
     /**
@@ -50,7 +68,7 @@ class AnimalController extends Controller
      */
     public function show(Animal $animal)
     {
-        //
+        return view('admin.animal.show',compact('animal'));
     }
 
     /**

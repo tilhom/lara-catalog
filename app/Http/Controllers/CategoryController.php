@@ -43,44 +43,17 @@ class CategoryController extends Controller
             'name' => 'required',
             'image' => 'image|max:1999'
         ]);
-        
-        $uploadedImage = $this->uploadfile(
-            $request->file('image'),
-            $request->hasFile('image')
-        );
 
         Category::create([
             'name' => request('name'),
             'description' => request('description'),
             'status' => (request('status')==='1')?1:0,
-            'image' => $uploadedImage
+            'image' => Category::uploadImage($request->file('image'))
         ]);
 
         return redirect()->route('categories.index')
         ->with('success','Category created successfully.');
     }
-
-    protected function uploadfile($image, $hasfile)
-    {
-        $filenameToStore='';
-        if ($hasfile) {
-        // Get filename with extension
-          $filenameWithExt = $image->getClientOriginalName();
-
-              // Get just the filename
-          $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-              // Get extension
-          $extension = $image->getClientOriginalExtension();
-
-              // Create new filename
-          $filenameToStore = $filename.'_'.time().'.'.$extension;
-
-              // Uplaod image
-          $path= $image->storeAs('public/categories/', $filenameToStore);
-      }
-      return $filenameToStore;
-  }
 
     /**
      * Display the specified resource.
@@ -120,20 +93,13 @@ class CategoryController extends Controller
             // Delete the old picture
             Storage::delete('public/categories/'.$category->image);
             // Upload the new picture
-            $uploadedImage = 
-            $this->uploadfile($request->file('image'),$request->hasFile('image'));
-            $category->update([
-            'name' => request('name'),
-            'description' => request('description'),
-            'status' => (request('status')==='1')?1:0,
-            // Update the model with the new picture
-            'image' => $uploadedImage,
-        ]);
-        }
+            $nameToStore = Category::uploadImage($request->file('image'));
+        } 
         $category->update([
-            'name' => request('name'),
-            'description' => request('description'),
-            'status' => (request('status')==='1')?1:0,
+        'name' => request('name'),
+        'description' => request('description'),
+        'status' => (request('status')==='1')?1:0,
+        'image' => isset($nameToStore)?$nameToStore:$category->image
         ]);
 
         return redirect()->route('categories.index')
