@@ -54,4 +54,12 @@ class Category extends Model
       }
       return $filenameToStore;
     }
+
+    public function getNameAttribute($value)
+    {
+      if (\App::getLocale()=='uz') {
+        return $this->name_uz;
+      }
+      return $value;
+    }
 }

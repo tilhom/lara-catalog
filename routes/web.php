@@ -2,7 +2,55 @@
 
 use App\Category;
 
+Route::get('welcome/{locale}', function ($locale) {
+    if($locale) App::setLocale($locale);
+    echo $locale."<br>";
+    echo __('message.welcome')."<br>";
+    echo __("I love programming.");
+});
+
+
+
+Route::get('locale/{locale}', function ($locale) {
+    \Session::put('locale', $locale);
+    $referer = Redirect::back()->getTargetUrl(); //URL предыдущей страницы
+    $parse_url = parse_url($referer, PHP_URL_PATH); //URI предыдущей страницы
+
+     //разбиваем на массив по разделителю
+    $segments = explode('/', $parse_url);
+
+    //Если URL (где нажали на переключение языка) содержал корректную метку языка
+    if (in_array($segments[1], ['en','uz'])) {
+        unset($segments[1]); //удаляем метку
+        array_splice($segments, 1, 0, $locale);
+    } 
+      $url = Request::root().implode("/", $segments);
+    
+    //если были еще GET-параметры - добавляем их
+    if(parse_url($referer, PHP_URL_QUERY)){    
+        $url = $url.'?'. parse_url($referer, PHP_URL_QUERY);
+    }
+    return redirect($url); //Перенаправляем назад на ту же страницу    
+});
+$myroutes =  function () {
+    Route::get('/', 'ShopController@index')->name('home');
+
+    Route::get('/search', 'ShopController@search')->name('search');
+
+    Route::get('/search/{query}', 'ShopController@rsearch')->name('rs'); 
+    Route::get('/{cslug}/{aslug}', 'ShopController@show')->name('show');
+    Route::get('/{cslug}', 'ShopController@showcat')->name('showcat');
+};
+
+Route::group(['prefix' => 'uz'], $myroutes);
+Route::group(['prefix' => 'en'], $myroutes);
+
 Route::get('/', 'ShopController@index')->name('home');
+
+Route::get('/search', 'ShopController@search')->name('search');
+
+Route::get('/search/{query}', 'ShopController@rsearch')->name('rs');
+
 
 Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
  //POST запрос для отправки email письма пользователю для сброса пароля

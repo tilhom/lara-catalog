@@ -2,7 +2,7 @@
           @if(count($categories))
           <div class="list-group">
 		  	@foreach($categories as $category)
-  			<a href="/{{$category->slug}}" 
+  			<a href="/{{App::getLocale()}}/{{$category->slug}}" 
   			class="list-group-item {{(request('cslug')==$category->slug)?'active':''}}" >
           		{{$category->name}}
           	</a>

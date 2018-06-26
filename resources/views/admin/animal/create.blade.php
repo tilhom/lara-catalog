@@ -33,7 +33,7 @@
 				<label for="exampleFormControlSelect1">
 					<strong>Category:</strong>
 				</label>
-				<select class="form-control" id="exampleFormControlSelect1" name="category_id" required>
+				<select class="form-control FormControlSelect1" id="FormControlSelect1" name="category_id" required>
 					<option value="">Please choose category..</option>
 					@foreach($categories as $category)
 					<option value="{{$category->id}}">

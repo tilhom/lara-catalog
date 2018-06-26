@@ -14,6 +14,7 @@
   <!-- Custom styles for this template-->
   <link href="{{asset('css/sb-admin.css')}}" rel="stylesheet">
   <link href="{{asset('css/titatoggle-dist-min.css')}}" rel="stylesheet">
+  <link href="{{asset('css/select2.min.css')}}" rel="stylesheet">
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -34,7 +35,13 @@
     <script src="{{asset('vendor/jquery-easing/jquery.easing.min.js')}}"></script>
     <!-- Custom scripts for all pages-->
     <script src="{{asset('js/sb-admin.min.js')}}"></script>
+    <script src="{{asset('js/select2.min.js')}}"></script>
+    <script>$(document).ready(function() {
+    $('.FormControlSelect1').select2();
+});
+</script>
     @yield('jscode')
+
 </script>
   </div>
 </body>
